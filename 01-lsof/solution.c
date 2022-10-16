@@ -13,7 +13,7 @@
 #include <errno.h>
 #include <string.h>
 
-#define N = 2000
+#define N 2000
 
 /**
    Implement this function to list processes. It must call report_file()
