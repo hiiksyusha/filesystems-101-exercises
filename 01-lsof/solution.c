@@ -24,7 +24,7 @@ void lsof(void){
     errno = 0;
 	DIR *procdir = opendir("/proc");
     
-	if (errno != NULL) {
+	if (errno != 0) {
 		report_error("/proc", errno);
 	    return;
 	    }
@@ -35,7 +35,7 @@ void lsof(void){
 
 	while (1) {
         d = readdir(procdir);
-        if d == NULL break;
+        if (d == NULL) break;
 		
 		pid_t pid = atoi(d->d_name); 
         
