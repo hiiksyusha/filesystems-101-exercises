@@ -21,10 +21,10 @@
 */
 
 void lsof(void){
-	
+    errno = 0;
 	DIR *procdir = opendir("/proc");
     
-	if (procdir == NULL) {
+	if (errno != NULL) {
 		report_error("/proc", errno);
 	    return;
 	    }
@@ -33,7 +33,9 @@ void lsof(void){
     
 	errno = 0;
 
-	while (d = readdir(procdir) != NULL) {
+	while (1) {
+        d = readdir(procdir);
+        if d == NULL break;
 		
 		pid_t pid = atoi(d->d_name); 
         
@@ -53,7 +55,9 @@ void lsof(void){
 	
     struct dirent * fd_file = NULL;
         
-    while (fd_file = readdir(fd_dir) != NULL) {
+    while (1) {
+        fd_file = readdir(fd_dir);
+        if (fd_file == NULL) break;
 		
     	int fd = atoi(fd_file->d_name);
 		if (fd == 0) continue;
