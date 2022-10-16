@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include <solution.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/mman.h>
@@ -23,10 +22,9 @@
 
 void lsof(void){
 	
-	errno = 0;
 	DIR *procdir = opendir("/proc");
     
-	if (errno != 0) {
+	if (procdir == NULL) {
 		report_error("/proc", errno);
 	    return;
 	    }
@@ -35,7 +33,8 @@ void lsof(void){
     
 	errno = 0;
 
-	while (d == readdir(procdir)) {
+	while (1) {
+        d = readdir(procdir);
 		if (d == NULL) break;
 		
 		pid_t pid = atoi(d->d_name); 
@@ -56,7 +55,8 @@ void lsof(void){
 	
     struct dirent * fd_file = NULL;
         
-    while (fd_file == readdir(fd_dir)) {
+    while (1) {
+        fd_file = readdir(fd_dir);
 		if (fd_file == NULL) break;
 		
     	int fd = atoi(fd_file->d_name);
