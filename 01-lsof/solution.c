@@ -33,7 +33,7 @@ void lsof(void){
     
 	errno = 0;
 
-	while (d = readdir(procdir)) {
+	while (d == readdir(procdir)) {
 		if (d == NULL) break;
 		
 		pid_t pid = atoi(d->d_name); 
@@ -44,17 +44,17 @@ void lsof(void){
         
 	sprintf(fdpath, "/proc/%d/fd", pid);
         
-	DIR *fd_dir = opendir(fd_path);
+	DIR *fd_dir = opendir(fdpath);
         
 	if (fd_dir == NULL) {
 		report_error(fdpath, errno);
-		closedir(dir);
+		closedir(procdir);
 		return;
 	}
 	
     struct dirent * fd_file = NULL;
         
-    while (fd_file = readdir(fd_dir)) {
+    while (fd_file == readdir(fd_dir)) {
 		if (fd_file == NULL) break;
 		
     	int fd = atoi(fd_file->d_name);
@@ -79,6 +79,4 @@ void lsof(void){
 	}
 	if (errno != 0) report_error("/proc", errno);
        
-   }
-	
 }
