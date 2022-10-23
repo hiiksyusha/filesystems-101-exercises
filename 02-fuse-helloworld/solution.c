@@ -65,14 +65,12 @@ static int my_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t
 }
 
 static int my_open(const char *path, struct fuse_file_info *fi) {
-    
-    void(path);
-    
-    if (strcmp(path+1, "/hello") != 0)
-        return -ENOENT;
 
     if ((fi->flags & O_ACCMODE) != O_RDONLY)
         return -EROFS;
+    
+    if (strcmp(path+1, "/hello") != 0)
+        return -ENOENT;
 
     return 0;
 }
