@@ -69,7 +69,7 @@ static int my_open(const char *path, struct fuse_file_info *fi) {
     if ((fi->flags & O_ACCMODE) != O_RDONLY)
         return -EROFS;
     
-    if (strcmp(path+1, "/hello"))
+    if (strcmp(path+1, "hello"))
         return -ENOENT;
 
     return 0;
