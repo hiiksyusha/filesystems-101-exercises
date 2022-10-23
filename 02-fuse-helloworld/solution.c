@@ -84,12 +84,12 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
     struct fuse_context* ctx = fuse_get_context();
     char kek[512] = {0};
     sprintf(kek, "hello, %d\n", ctx->pid);
-    int len = strlen(kek);
+    long unsigned int len = strlen(kek);
     
     if (offset < len) {
         if (offset + size > len)
             size = len - offset;
-        memcpy(buf, contents + offset, size);
+        memcpy(buf, kek + offset, size);
     }
     else
         size = 0;
@@ -109,7 +109,8 @@ static int my_write(const char *path, const char *buf, size_t size, off_t offset
 }
 
 static int my_rename(const char* path, const char* new_name, unsigned int flags) {
-   
+    
+    (void) path;
     (void) new_name;
     (void) flags;
 
