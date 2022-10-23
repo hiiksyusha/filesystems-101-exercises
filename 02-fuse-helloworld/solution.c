@@ -84,9 +84,9 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
     struct fuse_context* ctx = fuse_get_context();
     char kek[512] = {0};
     sprintf(kek, "hello, %d\n", ctx->pid);
-    long unsigned int len = strlen(kek);
+    const size_t len = strlen(kek);
     
-    if (offset < len) {
+    if ((size_t)offset < len) {
         if (offset + size > len)
             size = len - offset;
         memcpy(buf, kek + offset, size);
@@ -99,6 +99,7 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
 
 static int my_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
     
+    (void) path;
     (void) buf;
     (void) size;
     (void) offset;
@@ -176,13 +177,13 @@ static const struct fuse_operations hellofs_ops = {
     .readdir = my_readdir,
     .open = my_open,
     .read = my_read,
-    .write = my_write
+    .write = my_write,
     .rename = my_rename,
     .mkdir = my_mkdir,
     .unlink = my_unlink,
     .setxattr = my_setxattr,
     .removexattr = my_removexattr,
-    .write_buf = my_write_buf
+    .write_buf = my_write_buf,
     .create = my_create
 };
 
