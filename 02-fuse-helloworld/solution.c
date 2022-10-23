@@ -84,7 +84,7 @@ static int my_read(const char *path, char *buf, size_t size, off_t offset, struc
     struct fuse_context* ctx = fuse_get_context();
     char kek[512] = {0};
     sprintf(kek, "hello, %d\n", ctx->pid);
-    int len = strlen(kek)
+    int len = strlen(kek);
     
     if (offset < len) {
         if (offset + size > len)
