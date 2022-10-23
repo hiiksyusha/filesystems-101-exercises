@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <fuse.h>
 
-const char* file_name = "hello";
+char* file_name = "hello";
 
 
 static void *my_init(struct fuse_conn_info *conn, struct fuse_config *cfg) {
@@ -38,8 +38,8 @@ static int my_getattr(const char *path, struct stat *stbuf, struct fuse_file_inf
         stbuf->st_nlink = 2;
         
     }
-    else if (strcmp(path+1, "/hello") == 0) {
-        stbuf->st_mode = S_IFREG | S_IRUSR;
+    else if (strcmp(path, "/hello") == 0) {
+        stbuf->st_mode = S_IFREG | 0444;
         stbuf->st_nlink = 1;
         stbuf->st_size = 32;
     }
@@ -78,7 +78,7 @@ static int my_open(const char *path, struct fuse_file_info *fi) {
 static int my_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
     
     (void) fi;
-    if(strcmp(path+1, "/hello") != 0)
+    if(strcmp(path, "/hello") != 0)
         return -ENOENT;
 
     struct fuse_context* ctx = fuse_get_context();
