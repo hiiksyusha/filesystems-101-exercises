@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <fuse.h>
 
-const char* filename = "hello";
+const char* file_name = "hello";
 
 
 static void *my_init(struct fuse_conn_info *conn, struct fuse_config *cfg) {
@@ -68,11 +68,9 @@ static int my_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t
 
 static int my_open(const char *path, struct fuse_file_info *fi) {
 
-    if ((fi->flags & O_ACCMODE) != O_RDONLY)
-        return -EROFS;
-    
-    if (strcmp(path + 1, filename) != 0)
-        return -ENOENT;
+    if (strcmp(path+1, file_name) != 0) { return -EROFS; }
+         
+    if ((fi->flags & O_ACCMODE) != O_RDONLY) { return -EROFS; }
 
     return 0;
 }
