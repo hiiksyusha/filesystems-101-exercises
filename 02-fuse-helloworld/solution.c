@@ -69,10 +69,10 @@ static int my_open(const char *path, struct fuse_file_info *fi) {
     if ((fi->flags & O_ACCMODE) != O_RDONLY)
         return -EROFS;
     
-    if (strcmp(path+1, "hello"))
-        return -EROFS;
+    if (strcmp(path, "hello"))
+        return 0;
 
-    return 0;
+    return -EROFS;
 }
 
 static int my_read(const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
